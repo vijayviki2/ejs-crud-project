@@ -1,3 +1,7 @@
+# Project working steps
+
+## After connecting template engines 
+
 1. make sure that mango db connected
 2. next step is we need to create a database scheme in model
         a.open usermodel
