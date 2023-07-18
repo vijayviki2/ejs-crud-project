@@ -36,11 +36,26 @@ function printData(users) {
                 </ul>
                 </div>
                 <div class="card-footer">
-                <a href="/edit/${item._id}" class="btn btn-info">Edit</a></div>
-                <button class="btn btn-danger float-end">Delete</button>
-
+                    <a href="/edit?id=${item._id}" class="btn btn-info">Edit</a></div>
+                    <button onclick="deleteUser('${item._id}')" class="btn btn-danger float-end">Delete</button>
                 </div>
     </div>`
     })
 
 } 
+
+//delete user data
+
+function deleteUser(id) {
+   if(window.confirm('Are you sure to delete user?'))  {
+    console.log(`user id =`, id);
+    fetch(`http://localhost:4600/api/user/${id}`,{
+        method: 'DELETE',
+        headers: {'Content-Type' : "application/json"}
+    }).then(out => out.json())
+    .then(res => {
+        alert(res.msg);
+        window.location.reload();
+    }).catch(err => console.log(err.message));
+   }
+}

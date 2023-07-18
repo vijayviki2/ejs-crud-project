@@ -57,6 +57,58 @@ const userController = {
             return res.status(500).json({ msg: err.message })
         }
     },
+    readSingleUser: async ( req,res ) => {
+        try{
+            let id = req.params.id//ref id fromrouter params
+            
+            let single = await User.findById({ _id: id }) //requesting db to get user info 
+                if(!single)
+                    return res.status(404).json({ msg:`Requested user id not found`})
+
+                        return res.status(200).json({ user: single })
+        }catch (err) {
+            return res.status(500).json ({ msg: err.message })
+        }
+    },
+
+
+    updateUser: async (req,res) => {
+        try{
+            let id = req.params.id // read id from router params
+            const data = req.body
+
+            //user id exist not found
+            
+            let extUser = await User.findById({ _id:id})
+            if(!extUser)
+            return res.status(404).json({ msg:`Requested user id not found`})   
+            
+            //update logic
+            await User.findByIdAndUpdate({ _id:id} ,data)
+
+            return res.status(200).json({ msg: `User data updated successfully`})
+
+        }catch (err) {
+            return res.status(500).json ({ msg:err.message })
+        }
+    },
+
+    
+    deleteUser: async (req,res) => {
+        try{
+            let id = req.params.id
+
+            let extUser = await User.findById({_id:id})
+            if(!extUser)
+            return  res.status(404).json({ msg: `Requested user id not found`})
+
+            await User.findByIdAndDelete({_id: id})
+            return res.status(200).json({ msg:`User data deleted successfully`})
+
+        }catch(err) {
+            return res.status(500).json({ msg: err.message})
+        }
+    },
 
     pnf: (req,res) => {
         res.render('pnf.ejs') // pnf is default controller so it must be at the end
